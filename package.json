@@ -12,5 +12,8 @@
     "@playwright/test": "^1.58.0",
     "@types/node": "^25.0.10",
     "allure-playwright": "^3.4.5"
+  },
+  "dependencies": {
+    "images-to-pdf": "^1.0.2"
   }
 }

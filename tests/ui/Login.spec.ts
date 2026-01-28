@@ -1,6 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../../pages/LoginPage';
+import { EvidenceHelper } from '../../utils/EvidenceHelper';
 
+//Using PDf generation for evidence after all tests
+test.afterEach(async ({}, testInfo) => {
+    const testName = testInfo.title.replace(/\s+/g, '_');
+    await EvidenceHelper.generatePDF(testName);
+});
 test.describe('UI - Login Authentication', () => {
     let loginPage: LoginPage;
 
