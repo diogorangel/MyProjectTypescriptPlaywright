@@ -20,6 +20,7 @@ test.describe('UI - Login Authentication', () => {
         await page.screenshot({ path: 'evidence/positive-1-initial.png' });
         
         await loginPage.login('standard_user', 'secret_sauce');
+        await page.screenshot({ path: 'evidence/positive-1-login.png' });
         await page.waitForTimeout(2000); 
         
         await expect(page).toHaveURL(/inventory.html/);
@@ -29,9 +30,12 @@ test.describe('UI - Login Authentication', () => {
 
     // --- NEGATIVE SCENARIOS ---
     test('Should show error for locked out user', async ({ page }) => {
+        await page.screenshot({ path: 'evidence/negative-1-initial.png' });
         await loginPage.login('locked_out_user', 'secret_sauce');
         
+        await page.screenshot({ path: 'evidence/negative-locked-user-initial.png' });
         const error = await loginPage.getErrorMessage();
+        await page.screenshot({ path: 'evidence/show error-initial.png' });
         await expect(error).toContainText('Sorry, this user has been locked out');
         
         await page.screenshot({ path: 'evidence/negative-locked-user.png' });
@@ -39,21 +43,26 @@ test.describe('UI - Login Authentication', () => {
     });
 
     test('Should show error for invalid password', async ({ page }) => {
+        await page.screenshot({ path: 'evidence/negative-1-initial.png' });
         await loginPage.login('standard_user', 'wrong_password');
-        
+        await page.screenshot({ path: 'evidence/negative-1-initial.png' });
         const error = await loginPage.getErrorMessage();
+        await page.screenshot({ path: 'evidence/negative-1-initial.png' });
         await expect(error).toContainText('Username and password do not match any user in this service');
-        
+        await page.screenshot({ path: 'evidence/negative-1-initial.png' });
         await page.screenshot({ path: 'evidence/negative-wrong-password.png' });
         console.log('Negative Test: Correctly blocked invalid password.');
+        await page.screenshot({ path: 'evidence/negative-wrong-password.png' });
     });
 
     test('Should show error when fields are empty', async ({ page }) => {
+        await page.screenshot({ path: 'evidence/negative-wrong-fields-empty.png' });
         await loginPage.login('', ''); 
-        
+        await page.screenshot({ path: 'evidence/negative-wrong-fields-empty.png' });
         const error = await loginPage.getErrorMessage();
+        await page.screenshot({ path: 'evidence/negative-wrong-fields-empty.png' });
         await expect(error).toBeVisible();
-        
+        await page.screenshot({ path: 'evidence/negative-wrong-fields-empty.png' });
         await page.screenshot({ path: 'evidence/negative-empty-fields.png' });
     });
 });

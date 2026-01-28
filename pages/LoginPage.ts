@@ -16,4 +16,17 @@ export class LoginPage {
     async getErrorMessage() {
         return this.page.locator('[data-test="error"]');
     }
+    async fillUsername(user: string) {
+    await this.page.fill('#user-name', user);
+    return this; 
+    }
+
+    async fillPassword(pass: string) {
+        await this.page.fill('#password', pass);
+        return this;
+    }
+
+    async submit() {
+        await this.page.click('#login-button');
+    }
 }
