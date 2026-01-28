@@ -1,0 +1,1 @@
+Bug logged: API returns 200 for invalid dates.
