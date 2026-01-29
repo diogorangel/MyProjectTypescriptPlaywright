@@ -21,7 +21,7 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
         
-      - name: Run Playwright tests
+      - name: Run All Playwright tests Api and UI
         run: npx playwright test
 
       # Artifact 1: Playwright Standard HTML Report
