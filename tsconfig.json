@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "lib": ["ESNext", "DOM"],
+    
+    /* Interop Options */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Strictness */
+    "strict": false, // Mantemos falso para não te obrigar a tipar tudo agora
+    "noImplicitAny": false,
+
+    /* Path Mapping */
+    "baseUrl": ".",
+    "types": ["node", "@playwright/test"]
+  },
+  "include": [
+    "tests/**/*.ts",
+    "utils/**/*.ts",
+    "pages/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}

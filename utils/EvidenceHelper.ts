@@ -1,34 +1,44 @@
-import * as fs from 'fs';
-import * as path from 'path';
-
+import fs from 'fs';
+import path from 'path';
 // @ts-ignore
 const imagesToPdf = require('images-to-pdf');
 
 export class EvidenceHelper {
     static async generatePDF(testName: string, evidenceDir?: string) {
-        const dir = evidenceDir || path.join(process.cwd(), 'evidence');
-        if (!fs.existsSync(dir)) return;
+        const safeTestName = testName.replace(/[^a-z0-9]/gi, '_');
+        const targetDir = evidenceDir || path.join(process.cwd(), 'evidence', safeTestName);
 
-        const files = fs.readdirSync(dir)
+        if (!fs.existsSync(targetDir)) {
+            return;
+        }
+
+        const files = fs.readdirSync(targetDir)
             .filter(file => file.endsWith('.png'))
-            .map(file => path.join(dir, file));
+            .map(file => path.join(targetDir, file))
+            .sort();
 
         if (files.length === 0) return;
 
-        // Sanitiza o nome do arquivo para evitar caracteres inválidos
-        const safeName = testName.replace(/[^a-z0-9]/gi, '_');
-        const outputPath = path.join(dir, `${safeName}_Report.pdf`);
+        // 2. O PDF será salvo DENTRO da subpasta do teste, não na raiz
+        const outputPath = path.join(targetDir, `${safeTestName}_Report.pdf`);
 
+        // 3. Limpeza agressiva do 0.pdf para evitar o erro 'undefined'
+        const zeroPdfPath = path.join(process.cwd(), '0.pdf');
+        
         try {
+            if (fs.existsSync(zeroPdfPath)) {
+                fs.unlinkSync(zeroPdfPath);
+            }
+            
             await imagesToPdf(files, outputPath);
-            console.log(`✅ PDF generated: ${outputPath}`);
+            console.log(`✅ PDF generated in: ${targetDir}`);
         } catch (err: any) {
-            // Ignora apenas erros relacionados ao arquivo temporário 0.pdf 
-            // para permitir que o teste continue mesmo com conflito de workers
-            if (err?.message?.includes('0.pdf') || err?.path?.includes('0.pdf')) {
-                console.warn(`⚠️ PDF Worker Conflict ignored for: ${testName}`);
+            // Tratamento de erro robusto para concorrência
+            const errorMsg = err?.message || 'Concurrent worker access';
+            if (errorMsg.includes('0.pdf') || errorMsg.includes('EBUSY')) {
+                console.warn(`⚠️ PDF Worker Conflict (0.pdf) ignored for: ${testName}`);
             } else {
-                console.error(`❌ PDF Error: ${err.message}`);
+                console.error(`❌ Failed to generate PDF for ${testName}:`, errorMsg);
             }
         }
     }
