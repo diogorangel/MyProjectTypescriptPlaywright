@@ -1,15 +1,27 @@
 #Author : @diogorangel (Diogo Rangel)
 My Project: TypeScript with Playwright
+
 🎯 Project Purpose
 This project is a high-quality automated testing framework designed to validate both Web UI and API layers. By using Playwright with TypeScript, it demonstrates best practices such as:
-
 Page Object Model (POM) for UI maintainability.
-
 API Request Context for fast and reliable backend testing.
-
 Environment management (using .env files).
-
 Comprehensive Evidence Gathering (screenshots, videos, and traces).
+
+## 🎭 Playwright Automation Report
+The test report is automatically updated with each push.
+
+🚀 **[View Online Report](https://diogorangel.github.io/MyProjectTypescriptPlaywright/)**
+
+---
+*Last execution: [![Playwright Tests](https://github.com/diogorangel/MyProjectTypescriptPlaywright/actions/workflows/playwright.yml/badge.svg)](https://github.com/diogorangel/MyProjectTypescriptPlaywright/actions)*
+
+## 📈 Playwright Report in Live
+[![Playwright Report in Live](https://img.shields.io/badge/Playwright-Report-green?style=for-the-badge&logo=playwright)](https://diogorangel.github.io/MyProjectTypescriptPlaywright/playwright-report/index.html?serverWindowId=f12ddfed-985c-44e6-aea6-a4a58f92917a)
+
+## 📈 Playwright Report Local
+[![Playwright Report Local](https://img.shields.io/badge/Playwright-Report-green?style=for-the-badge&logo=playwright)](http://127.0.0.1:3000/MyProjectTypescriptPlaywright/playwright-report/index.html?serverWindowId=f12ddfed-985c-44e6-aea6-a4a58f92917a)
+
 
 🚀 Setup & Initialization
 Commands used to build and maintain the environment.

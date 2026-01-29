@@ -4,6 +4,7 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+
 jobs:
   test:
     timeout-minutes: 60
@@ -24,7 +25,7 @@ jobs:
       - name: Run All Playwright tests Api and UI
         run: npx playwright test
 
-      # Artifact 1: Playwright Standard HTML Report
+      # Artefato 1: Relatório HTML Padrão
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
@@ -32,10 +33,32 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-      # Artifact 2: Your evidence in PDF (The Corporate Way)
+      # Artefato 2: Evidências em PDF
       - uses: actions/upload-artifact@v4
-        if: always() # Ensures the PDF uploads even if the test fails.
+        if: always()
         with:
           name: test-evidence-pdf
           path: evidence/*.pdf
           retention-days: 30
+
+  # NOVO JOB: Faz o deploy do relatório para o GitHub Pages
+  deploy:
+    needs: test
+    if: always() # Garante que o relatório seja publicado mesmo se o teste falhar
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Relatório HTML
+        uses: actions/download-artifact@v4
+        with:
+          name: playwright-report
+          path: public-report # Pasta temporária para o deploy
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public-report
